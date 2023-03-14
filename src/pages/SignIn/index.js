@@ -1,59 +1,54 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Platform,
-  StatusBar,
-  Image,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
 import React from "react";
+import { StyleSheet, Platform, StatusBar, Keyboard } from "react-native";
+
+import { useNavigation } from "@react-navigation/native";
+
 import {
-  AreaImagem,
   AreaInput,
-  Button,
   Container,
   Input,
-  TextButton,
-  TextSignOut,
+  Background,
+  Logo,
+  Link,
+  SubmitButton,
+  SubmitText,
+  TextLink,
 } from "./styles";
 
 export default function SignIn() {
+  const navigation = useNavigation();
+
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Container style={styles.AndroidSafeArea}>
-        <AreaImagem>
-          <Image
-            source={require("../../assets/logo.png")}
-            style={{ height: 150, width: 184 }}
-          />
-        </AreaImagem>
+    <Background>
+      <Container behavior={Platform.OS === "ios" ? "padding" : ""} enabled>
+        <Logo source={require("../../assets/logo.png")} />
+
         <AreaInput>
-          <Input 
-          placeholder="Email"  
-          keyboardType='email-address' 
-          autoCapitalize="none" />
-          <Input 
-          placeholder="Senha" 
-          secureTextEntry />
+          <Input
+            placeholder="Email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
         </AreaInput>
-        <Button>
-          <TextButton>Acessar</TextButton>
-        </Button>
-        <TouchableOpacity>
-          <Text style={{textAlign:"center"}}>Criar conta gratuita</Text>
-        </TouchableOpacity>
+        <AreaInput>
+          <Input placeholder="Senha" secureTextEntry />
+        </AreaInput>
+
+        <SubmitButton activeOpacity={0.8}>
+          <SubmitText>Acessar</SubmitText>
+        </SubmitButton>
+
+        <Link>
+          <TextLink
+            style={{ textAlign: "center" }}
+            onPress={() => {
+              navigation.navigate("SignUp");
+            }}
+          >
+            Criar conta gratuita
+          </TextLink>
+        </Link>
       </Container>
-    </TouchableWithoutFeedback>
+    </Background>
   );
 }
-
-const styles = StyleSheet.create({
-  AndroidSafeArea: {
-    flex: 1,
-    backgroundColor: "white",
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
-});
