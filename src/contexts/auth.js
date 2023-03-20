@@ -1,19 +1,38 @@
 import { View, Text } from "react-native";
 import React, { createContext, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
+import api from "../services/api";
 export const AuthContext = createContext({});
 
 function AuthProvider({ children }) {
-  const [user, setUser] = useState({
-    nome: "elvis",
-  });
+  const [user, setUser] = useState(null);
+  const [loadingAuth, setLoadingAuth] = useState(false);
 
-async function signUp(nome, email, password){
-  console.log(`${Email} = ${password} = ${nome}`)
-}
+  const navigation = useNavigation();
+
+  async function signUp(nome, email, password) {
+    setLoadingAuth(true);
+
+    try {
+      const response = await api.post("/users", {
+        name: nome,
+        password: password,
+        email: email,
+      });
+      setLoadingAuth(false);
+
+      navigation.goBack();
+    } catch (error) {
+      console.log(error);
+      setLoadingAuth(false);
+    }
+  }
 
   return (
-    <AuthContext.Provider value={{ user, signUp }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, signUp, loadingAuth }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 

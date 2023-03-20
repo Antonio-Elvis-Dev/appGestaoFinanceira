@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Platform, StatusBar, Keyboard } from "react-native";
-
 import { useNavigation } from "@react-navigation/native";
 
 import {
@@ -15,9 +14,13 @@ import {
   TextLink,
 } from "./styles";
 
+import { AuthContext } from "../../contexts/auth";
+
 export default function SignIn() {
   const navigation = useNavigation();
 
+  const { loadingAuth } = useContext(AuthContext);
+  
   return (
     <Background>
       <Container behavior={Platform.OS === "ios" ? "padding" : ""} enabled>
@@ -38,15 +41,16 @@ export default function SignIn() {
           <SubmitText>Acessar</SubmitText>
         </SubmitButton>
 
-        <Link>
-          <TextLink
-            style={{ textAlign: "center" }}
-            onPress={() => {
-              navigation.navigate("SignUp");
-            }}
-          >
-            Criar conta gratuita
-          </TextLink>
+        <Link
+          onPress={() => {
+            navigation.navigate("SignUp");
+          }}
+        >
+          {loadingAuth ? (
+            <ActivityIndicator size={20} color="#FFF" />
+          ) : (
+            <SubmitText>Cadastrar</SubmitText>
+          )}
         </Link>
       </Container>
     </Background>

@@ -9,21 +9,25 @@ import {
   SubmitText,
 } from "../SignIn/styles";
 
+import { Platform, ActivityIndicator } from "react-native";
+
 import { AuthContext } from "../../contexts/auth";
 
 export default function SignUp() {
-  const { user, signUp } = useContext(AuthContext);
+  const { loadingAuth, signUp } = useContext(AuthContext);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   function handleSignUp() {
-    signUp(nome, email, password);
+    if (nome === "" && email === "" && password === "") {
+    } else {
+      signUp(nome, email, password);
+    }
   }
-  handleSignUp()
   return (
     <Background>
-      <Container>
+      <Container behavior={Platform.OS === "ios" ? "padding" : ""} enable>
         <AreaInput>
           <Input
             placeholder="Nome"
@@ -53,8 +57,13 @@ export default function SignUp() {
             }}
           />
         </AreaInput>
-        <SubmitButton >
-          <SubmitText>Cadastrar</SubmitText>
+
+        <SubmitButton onPress={handleSignUp}>
+          {loadingAuth ? (
+            <ActivityIndicator size={20} color="#FFF" />
+          ) : (
+            <SubmitText>Cadastrar</SubmitText>
+          )}
         </SubmitButton>
       </Container>
     </Background>
