@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 
-export default function AurhRoutes() {
+export default function AuthRoutes() {
   const AuthStack = createNativeStackNavigator();
 
   return (

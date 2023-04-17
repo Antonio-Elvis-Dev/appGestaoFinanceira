@@ -1,5 +1,11 @@
-import React, { useContext } from "react";
-import { StyleSheet, Platform, StatusBar, Keyboard } from "react-native";
+import React, { useContext, useState } from "react";
+import {
+  StyleSheet,
+  Platform,
+  StatusBar,
+  Keyboard,
+  ActivityIndicator,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import {
@@ -18,9 +24,17 @@ import { AuthContext } from "../../contexts/auth";
 
 export default function SignIn() {
   const navigation = useNavigation();
+  const { loadingAuth,signIn } = useContext(AuthContext);
 
-  const { loadingAuth } = useContext(AuthContext);
-  
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+
+
+function handleLogin(){
+  signIn(email, password)
+}
+
   return (
     <Background>
       <Container behavior={Platform.OS === "ios" ? "padding" : ""} enabled>
@@ -31,13 +45,20 @@ export default function SignIn() {
             placeholder="Email"
             keyboardType="email-address"
             autoCapitalize="none"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
           />
         </AreaInput>
         <AreaInput>
-          <Input placeholder="Senha" secureTextEntry />
+          <Input
+            placeholder="Senha"
+            secureTextEntry
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+          />
         </AreaInput>
 
-        <SubmitButton activeOpacity={0.8}>
+        <SubmitButton activeOpacity={0.8}  onPress={handleLogin}>
           <SubmitText>Acessar</SubmitText>
         </SubmitButton>
 
@@ -49,7 +70,7 @@ export default function SignIn() {
           {loadingAuth ? (
             <ActivityIndicator size={20} color="#FFF" />
           ) : (
-            <SubmitText>Cadastrar</SubmitText>
+            <SubmitText>Não possui cadastro?</SubmitText>
           )}
         </Link>
       </Container>
