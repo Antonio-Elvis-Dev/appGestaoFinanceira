@@ -4,12 +4,16 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { View, Text } from "react-native";
 import Home from "../pages/Home";
 import New from "../pages/New";
-import Logout from "../pages/Logout";
+import Profile from "../pages/Profile";
+import CustomDrawer from "../components/CustomDrawer";
 
 export default function AppRoutes() {
   const Drawer = createDrawerNavigator();
   return (
     <Drawer.Navigator
+
+
+    drawerContent={(props)=><CustomDrawer {...props}/>}
       screenOptions={{
         headerShown: false,
 
@@ -30,7 +34,7 @@ export default function AppRoutes() {
     >
       <Drawer.Screen name="Home" component={Home}  />
       <Drawer.Screen name="Registrar" component={New} />
-      <Drawer.Screen name="Meu Perfil" component={Logout} />
+      <Drawer.Screen name="Perfil" component={Profile} />
     </Drawer.Navigator>
   );
 }

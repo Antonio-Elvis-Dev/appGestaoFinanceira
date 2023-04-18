@@ -23,12 +23,13 @@ export default function Home() {
   const [movements, setMovements] = useState([]);
 
   useEffect(() => {
-    let isActive = true; // melhora o desempenho: monta os dados ao abrir d tela
+    let isActive = true; //TODO: melhora o desempenho: monta os dados ao abrir d tela
 
     async function getMovements() {
       let dateFormated = format(dateMovements, "dd/MM/yyyy");
 
-      const receives = await api.get("/receives", { // pega as movimentações
+      const receives = await api.get("/receives", {
+        // pega as movimentações
         params: {
           date: dateFormated,
         },
@@ -41,7 +42,7 @@ export default function Home() {
       });
       if (isActive) {
         setListBalance(balance.data);
-        setMovements(receives.data); // salva as movimentações em Movements
+        setMovements(receives.data); //TODO: salva as movimentações em Movements
       }
     }
     getMovements();
@@ -49,7 +50,21 @@ export default function Home() {
     return () => {
       isActive = false; // melhora o desempenho: desmonta os dados ao mudar de tela
     };
-  }, [isFocused]);
+  }, [isFocused, dateMovements]); //TODO: quando do dateMovements é atualizado o useefect faz uma nova requisição a api
+
+  async function handleDelete(id) {
+    // TODO: função que deleta um registro sondo passada como propriedade no HistoricoList
+    try {
+      await api.delete("/receives/delete", {
+        params: {
+          item_id: id,
+        },
+      });
+      setDateMovements(new Date()); //TODO: seta uma nova data para datemovements
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <Background>
@@ -71,10 +86,12 @@ export default function Home() {
       </Area>
       <List
         data={movements}
-        keyExtrator={item => item.id}
-        renderItem={({ item }) => <HistoricoList data={item} />}
+        keyExtrator={(item) => item.id}
+        renderItem={({ item }) => (
+          <HistoricoList data={item} deleteItem={handleDelete} />
+        )}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBotton:20}}
+        contentContainerStyle={{ paddingBotton: 20 }}
       />
     </Background>
   );
