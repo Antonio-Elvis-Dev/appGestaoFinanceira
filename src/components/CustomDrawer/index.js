@@ -7,7 +7,7 @@ import {
 } from "@react-navigation/drawer";
 
 import { AuthContext } from "../../contexts/auth";
-import Icon from '@expo/vector-icons/Feather'
+import Icon from "@expo/vector-icons/Feather";
 export default function CustomDrawer(props) {
   const { user, signOut } = useContext(AuthContext);
 
@@ -30,17 +30,20 @@ export default function CustomDrawer(props) {
           numberOfLines={1}
           style={{ fontSize: 17, fontWeight: "bold", marginBottom: 14 }}
         >
-          {user && user.name}
+          {user && user?.name}
         </Text>
       </View>
 
       <DrawerItemList {...props} />
 
-      <DrawerItem label="Sair" 
-      labelStyle={{color:'#121212'}}
-      style={{borderColor:'#C62C36', borderWidth:2, }}
-      icon={({color,size})=><Icon name="log-out" size={size} color={color}/>}
-      onPress={()=>signOut()}
+      <DrawerItem
+        label="Sair"
+        labelStyle={{ color: "#fff", fontWeight: "bold", fontSize: 16 }}
+        style={{ borderColor: "#fff", borderWidth: 2,backgroundColor:'#ad5f48' }}
+        icon={({ color, size }) => (
+          <Icon name="log-out" size={size} color="#fff" />
+        )}
+        onPress={() => signOut()}
       />
     </DrawerContentScrollView>
   );

@@ -1,7 +1,8 @@
 import { View, Text } from "react-native";
 import React, { useMemo } from "react";
-import { Label, Container,Balance } from "./styles";
+import { Label, Container, Balance } from "./styles";
 export default function BalanceItem({ data }) {
+  // console.log(data)
   const labelName = useMemo(() => {
     if (data.tag === "saldo") {
       return {
@@ -13,16 +14,16 @@ export default function BalanceItem({ data }) {
         label: "Entradas de hoje",
         color: "00B94A",
       };
-    } else if(data.tag==='despesa'){
+    } else if (data.tag === "despesa") {
       return {
-        label: "Saídas de hoje",
+        label: `Saídas de hoje`,
         color: "EF463A",
       };
     }
   }, [data]);
   return (
     <Container bg={labelName.color}>
-      <Label >{labelName.label}</Label>
+      <Label>{labelName.label}</Label>
       <Balance>R$ {data.saldo}</Balance>
     </Container>
   );

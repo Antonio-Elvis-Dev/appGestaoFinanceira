@@ -13,8 +13,15 @@ export const Message = styled.Text`
 `;
 export const Name = styled.Text`
   font-size: 24px;
-  margin-bottom: 24px;
+  margin-bottom: 4px;
   margin-top: 8px;
+  padding: 0 14px   ;
+  color: #121212;
+
+`;
+export const Email = styled.Text`
+  font-size: 20px;
+  margin-bottom: 24px;
   padding: 0 14px   ;
   color: #121212;
 

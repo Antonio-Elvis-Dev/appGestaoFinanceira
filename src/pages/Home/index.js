@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Modal } from "react-native";
 
 // import { AuthContext } from "../../contexts/auth";
 import { Background, ListBalance, Area, Title, List } from "./styles";
@@ -14,6 +14,7 @@ import BalanceItem from "../../components/BalanceItem";
 
 import Icon from "@expo/vector-icons/MaterialIcons";
 import HistoricoList from "../../components/HistoricoList";
+import CalendarModal from "../../components/CalendarModal";
 
 export default function Home() {
   const isFocused = useIsFocused();
@@ -21,13 +22,14 @@ export default function Home() {
   const [listBalance, setListBalance] = useState([]);
   const [dateMovements, setDateMovements] = useState(new Date());
   const [movements, setMovements] = useState([]);
-
+  const [modalVisible, setModalVisible] = useState(false);
   useEffect(() => {
     let isActive = true; //TODO: melhora o desempenho: monta os dados ao abrir d tela
 
     async function getMovements() {
-      let dateFormated = format(dateMovements, "dd/MM/yyyy");
-
+      let date = new Date(dateMovements);
+      let onlyDate = date.valueOf() + date.getTimezoneOffset() * 60 * 1000;
+      let dateFormated = format(onlyDate, "dd/MM/yyyy");
       const receives = await api.get("/receives", {
         // pega as movimentações
         params: {
@@ -44,6 +46,7 @@ export default function Home() {
         setListBalance(balance.data);
         setMovements(receives.data); //TODO: salva as movimentações em Movements
       }
+
     }
     getMovements();
 
@@ -66,6 +69,10 @@ export default function Home() {
     }
   }
 
+  function filterDateMovements(dateSelected) {
+    setDateMovements(dateSelected);
+  }
+  // console.log(dateMovements)
   return (
     <Background>
       <Header title="Minhas Movimentações" />
@@ -75,15 +82,16 @@ export default function Home() {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         keyExtrator={(item) => item.tag}
-        renderItem={({ item }) => <BalanceItem data={item} />}
+        renderItem={({ item }) => <BalanceItem data={item}  />}
       />
 
       <Area>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Icon name="event" size={30} color="#121212" />
         </TouchableOpacity>
         <Title>Ultimas Movimentações</Title>
       </Area>
+
       <List
         data={movements}
         keyExtrator={(item) => item.id}
@@ -93,6 +101,12 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBotton: 20 }}
       />
+      <Modal visible={modalVisible} animationType="slide" transparent>
+        <CalendarModal
+          setVisible={() => setModalVisible(false)}
+          handleFilter={filterDateMovements}
+        />
+      </Modal>
     </Background>
   );
 }

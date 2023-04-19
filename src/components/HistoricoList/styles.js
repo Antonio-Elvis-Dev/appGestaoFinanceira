@@ -7,8 +7,12 @@ export const Container = styled.View`
   margin-right: 10px;
   margin-bottom: 14px;
   padding: 12px;
+  flex-direction: row;
+  justify-content: space-between;
 `;
-export const Text = styled.Text``;
+export const Text = styled.Text`
+font-size: 18px;
+`;
 export const Tipo = styled.View`
   flex-direction: row;
 `;
@@ -31,3 +35,4 @@ export const TipoText = styled.Text`
   font-size: 16px;
   font-style: italic;
 `;
+

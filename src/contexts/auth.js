@@ -8,7 +8,7 @@ import api from "../services/api";
 export const AuthContext = createContext({});
 
 function AuthProvider({ children }) {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState('');
   const [loadingAuth, setLoadingAuth] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
@@ -72,7 +72,7 @@ function AuthProvider({ children }) {
       await AsyncStorage.setItem("@finToken", token); // salvando token do usuario no async storage
 
       api.defaults.headers["Authorization"] = `Bearer ${token}`; // o token do usuário é tido como default - não cendo necessáro chamar o token em outros locais
-      setUser({ id, user, email });
+      setUser({ id, name, email });
       setLoadingAuth(false);
     } catch (err) {
       console.log("Erro ao logar", err);

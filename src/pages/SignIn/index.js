@@ -70,7 +70,7 @@ function handleLogin(){
           {loadingAuth ? (
             <ActivityIndicator size={20} color="#FFF" />
           ) : (
-            <SubmitText>Não possui cadastro?</SubmitText>
+            <TextLink>Não possui cadastro?</TextLink>
           )}
         </Link>
       </Container>

@@ -10,6 +10,7 @@ import {
   LogoutButton,
   NewText,
   NewLink,
+  Email
 } from "./styles";
 
 export default function Profile() {
@@ -22,7 +23,8 @@ export default function Profile() {
       <Header title="Meu Perfil" />
 
       <Message>Bem-Vindo de volta!</Message>
-      <Name numberOfLines={1}>{user && user.name}</Name>
+      <Name numberOfLines={1}>{user && user?.name}</Name>
+      <Email numberOfLines={1}> {user && user?.email}</Email>
 
       <NewLink onPress={()=>navigation.navigate("Registrar")}>
         <NewText>Fazer Registro</NewText>
